@@ -67,14 +67,61 @@ function handleAction() {
 
 function showDashboard(username) {
   document.body.innerHTML = `
-    <div class="container animate">
+    <style>
+      body {
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(120deg, #89f7fe, #66a6ff);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .dashboard {
+        background: white;
+        padding: 30px 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        width: 360px;
+        text-align: center;
+        animation: fadeIn 0.6s ease-in;
+      }
+
+      .dashboard h1 {
+        margin-bottom: 20px;
+      }
+
+      button {
+        padding: 10px 25px;
+        background: #007bff;
+        color: white;
+        border: none;
+        font-size: 1rem;
+        border-radius: 7px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background 0.3s;
+      }
+
+      button:hover {
+        background: #0056b3;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+
+    <div class="dashboard">
       <h1>Welcome, ${username} 🜲</h1>
-      <p>This is your dashboard.</p>
+      <p>You have successfully logged in.</p>
       <button onclick="logout()">Logout</button>
     </div>
   `;
 }
 
 function logout() {
-  location.reload(); // Reset back to login/signup UI
+  location.reload();
 }

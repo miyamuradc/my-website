@@ -1,79 +1,156 @@
-<script>
-  // Existing user data stored in localStorage as 'users'
-  let users = JSON.parse(localStorage.getItem("users") || "{}");
-
-  const form = document.getElementById("form");
-  const loginBtn = document.getElementById("loginBtn");
-  const signupBtn = document.getElementById("signupBtn");
-  const message = document.getElementById("message");
-  const usernameInput = document.getElementById("username");
-  const passwordInput = document.getElementById("password");
-
-  let mode = "login"; // or "signup"
-
-  function clearInputs() {
-    usernameInput.value = "";
-    passwordInput.value = "";
-  }
-
-  function showMessage(text, color = "red") {
-    message.style.color = color;
-    message.textContent = text;
-  }
-
-  loginBtn.addEventListener("click", e => {
-    e.preventDefault();
-    mode = "login";
-    showMessage("");
-  });
-
-  signupBtn.addEventListener("click", e => {
-    e.preventDefault();
-    mode = "signup";
-    showMessage("");
-  });
-
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-    const username = usernameInput.value.trim();
-    const password = passwordInput.value.trim();
-
-    // Basic validation
-    if (username.length < 3) {
-      showMessage("Username must be at least 3 characters");
-      return;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login / Signup</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
-    if (password.length < 6) {
-      showMessage("Password must be at least 6 characters");
-      return;
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #aaa;
+      width: 320px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      color: #333;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 0.6rem 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    button {
+      width: 48%;
+      padding: 10px;
+      margin: 0.6rem 1%;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #message {
+      margin-top: 1rem;
+      min-height: 1.2rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Login / Signup</h1>
+    <form id="form">
+      <input type="text" id="username" placeholder="Username" autocomplete="off" />
+      <input type="password" id="password" placeholder="Password" autocomplete="off" />
+      <div>
+        <button id="loginBtn" type="submit">Login</button>
+        <button id="signupBtn" type="submit">Signup</button>
+      </div>
+    </form>
+    <div id="message"></div>
+  </div>
+
+  <script>
+    // Load existing users from localStorage or empty object
+    let users = JSON.parse(localStorage.getItem("users") || "{}");
+
+    const form = document.getElementById("form");
+    const loginBtn = document.getElementById("loginBtn");
+    const signupBtn = document.getElementById("signupBtn");
+    const message = document.getElementById("message");
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+
+    let mode = "login"; // default mode
+
+    function clearInputs() {
+      usernameInput.value = "";
+      passwordInput.value = "";
     }
 
-    if (mode === "signup") {
-      if (users[username]) {
-        showMessage("Username already exists");
-        return;
-      }
-      users[username] = password;
-      localStorage.setItem("users", JSON.stringify(users));
-      showMessage("Signup successful! You can now login.", "green");
-      clearInputs();
+    function showMessage(text, color = "red") {
+      message.style.color = color;
+      message.textContent = text;
+    }
+
+    loginBtn.addEventListener("click", e => {
+      e.preventDefault();
       mode = "login";
-      return;
-    }
+      showMessage("");
+    });
 
-    if (mode === "login") {
-      if (!users[username]) {
-        showMessage("User not found. Please sign up first.");
+    signupBtn.addEventListener("click", e => {
+      e.preventDefault();
+      mode = "signup";
+      showMessage("");
+    });
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      // Validation
+      if (username.length < 3) {
+        showMessage("Username must be at least 3 characters");
         return;
       }
-      if (users[username] !== password) {
-        showMessage("Incorrect password.");
+      if (password.length < 6) {
+        showMessage("Password must be at least 6 characters");
         return;
       }
-      // Login success!
-      localStorage.setItem("currentUser", username);
-      clearInputs();
-      window.location.href = "dashboard.html"; // redirect to dashboard
-    }
-  });
-</script>
+
+      if (mode === "signup") {
+        if (users[username]) {
+          showMessage("Username already exists");
+          return;
+        }
+        users[username] = password;
+        localStorage.setItem("users", JSON.stringify(users));
+        showMessage("Signup successful! You can now login.", "green");
+        clearInputs();
+        mode = "login"; // switch back to login mode
+        return;
+      }
+
+      if (mode === "login") {
+        if (!users[username]) {
+          showMessage("User not found. Please sign up first.");
+          return;
+        }
+        if (users[username] !== password) {
+          showMessage("Incorrect password.");
+          return;
+        }
+        // Login success!
+        localStorage.setItem("currentUser", username);
+        clearInputs();
+        window.location.href = "dashboard.html"; // Redirect to dashboard
+      }
+    });
+  </script>
+</body>
+</html>

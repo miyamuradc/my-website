@@ -4,13 +4,22 @@
   <meta charset="UTF-8">
   <title>Login & Signup</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div class="container">
+  <div class="container animate">
     <h1 id="form-title">Signup</h1>
 
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
+    <div class="input-box">
+      <i class="fas fa-user"></i>
+      <input type="text" id="username" placeholder="Username">
+    </div>
+
+    <div class="input-box">
+      <i class="fas fa-lock"></i>
+      <input type="password" id="password" placeholder="Password">
+    </div>
+
     <button onclick="handleAction()">Signup</button>
 
     <p id="switch-text">Already have an account? <a href="#" onclick="switchMode()">Login</a></p>

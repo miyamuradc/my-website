@@ -1,12 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My Local Site</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Login & Signup</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Hello, World!</h1>
-  <button onclick="sayHi()">Click Me</button>
+  <div class="container">
+    <h1 id="form-title">Signup</h1>
+
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="handleAction()">Signup</button>
+
+    <p id="switch-text">Already have an account? <a href="#" onclick="switchMode()">Login</a></p>
+    <p id="status"></p>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>

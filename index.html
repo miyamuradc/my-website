@@ -1,29 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login & Signup</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 300px;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    p {
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+    #status {
+      color: red;
+      margin: 5px 0 0;
+    }
+  </style>
 </head>
 <body>
-  <div class="container animate">
+  <div class="container" id="form-container">
     <h1 id="form-title">Signup</h1>
-
-    <div class="input-box">
-      <i class="fas fa-user"></i>
-      <input type="text" id="username" placeholder="Username">
-    </div>
-
-    <div class="input-box">
-      <i class="fas fa-lock"></i>
-      <input type="password" id="password" placeholder="Password">
-    </div>
-
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
     <button onclick="handleAction()">Signup</button>
-
-    <p id="switch-text">Already have an account? <a href="#" onclick="switchMode()">Login</a></p>
     <p id="status"></p>
+    <p id="switch-text">
+      Already have an account? <a href="#" onclick="switchMode()">Login</a>
+    </p>
   </div>
 
   <script src="script.js"></script>

@@ -8,10 +8,6 @@ function switchMode() {
     ? `Don't have an account? <a href="#" onclick="switchMode()">Signup</a>`
     : `Already have an account? <a href="#" onclick="switchMode()">Login</a>`;
   document.getElementById("status").innerText = "";
-  clearInputs();
-}
-
-function clearInputs() {
   document.getElementById("username").value = "";
   document.getElementById("password").value = "";
 }
@@ -43,83 +39,35 @@ function handleAction() {
       status.innerText = "User does not exist.";
       return;
     }
-
     if (users[username] !== password) {
       status.innerText = "Incorrect password.";
       return;
     }
-
-    // ✅ SUCCESSFUL LOGIN —> Show Dashboard
+    // ✅ Show Dashboard
     showDashboard(username);
   } else {
     if (users[username]) {
       status.innerText = "Username already exists.";
       return;
     }
-
     users[username] = password;
     localStorage.setItem("users", JSON.stringify(users));
-    status.innerText = "Signup successful! You can now log in.";
+    status.innerText = "Signup successful! You can now login.";
   }
 
-  clearInputs();
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
 }
 
 function showDashboard(username) {
-  document.body.innerHTML = `
-    <style>
-      body {
-        font-family: 'Segoe UI', sans-serif;
-        background: linear-gradient(120deg, #89f7fe, #66a6ff);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-      }
-
-      .dashboard {
-        background: white;
-        padding: 30px 40px;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        width: 360px;
-        text-align: center;
-        animation: fadeIn 0.6s ease-in;
-      }
-
-      .dashboard h1 {
-        margin-bottom: 20px;
-      }
-
-      button {
-        padding: 10px 25px;
-        background: #007bff;
-        color: white;
-        border: none;
-        font-size: 1rem;
-        border-radius: 7px;
-        cursor: pointer;
-        margin-top: 10px;
-        transition: background 0.3s;
-      }
-
-      button:hover {
-        background: #0056b3;
-      }
-
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-    </style>
-
-    <div class="dashboard">
+  const dashboardHTML = `
+    <div class="container">
       <h1>Welcome, ${username} 🜲</h1>
-      <p>You have successfully logged in.</p>
+      <p>This is your dashboard.</p>
       <button onclick="logout()">Logout</button>
     </div>
   `;
+  document.body.innerHTML = dashboardHTML;
 }
 
 function logout() {

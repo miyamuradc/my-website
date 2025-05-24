@@ -8,31 +8,58 @@ function switchMode() {
     ? `Don't have an account? <a href="#" onclick="switchMode()">Signup</a>`
     : `Already have an account? <a href="#" onclick="switchMode()">Login</a>`;
   document.getElementById("status").innerText = "";
+  clearInputs();
+}
+
+function clearInputs() {
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
 }
 
 function handleAction() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const status = document.getElementById("status");
 
   if (!username || !password) {
-    document.getElementById("status").innerText = "Please enter both fields.";
+    status.innerText = "Please fill in both fields.";
     return;
   }
 
-  if (isLogin) {
-    const storedUser = localStorage.getItem("user");
-    if (!storedUser) {
-      document.getElementById("status").innerText = "No user found. Please signup first.";
-    } else {
-      const { savedUsername, savedPassword } = JSON.parse(storedUser);
-      if (username === savedUsername && password === savedPassword) {
-        document.getElementById("status").innerText = "Login successful!";
-      } else {
-        document.getElementById("status").innerText = "Incorrect username or password.";
-      }
-    }
-  } else {
-    localStorage.setItem("user", JSON.stringify({ savedUsername: username, savedPassword: password }));
-    document.getElementById("status").innerText = "Signup successful! You can now log in.";
+  if (username.length < 3) {
+    status.innerText = "Username must be at least 3 characters.";
+    return;
   }
+
+  if (password.length < 6) {
+    status.innerText = "Password must be at least 6 characters.";
+    return;
+  }
+
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+
+  if (isLogin) {
+    if (!users[username]) {
+      status.innerText = "User does not exist.";
+      return;
+    }
+
+    if (users[username] !== password) {
+      status.innerText = "Incorrect password.";
+      return;
+    }
+
+    status.innerText = "Login successful!";
+  } else {
+    if (users[username]) {
+      status.innerText = "Username already exists.";
+      return;
+    }
+
+    users[username] = password;
+    localStorage.setItem("users", JSON.stringify(users));
+    status.innerText = "Signup successful! You can now log in.";
+  }
+
+  clearInputs();
 }

@@ -1,72 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login & Signup</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #00c6ff, #0072ff);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .container {
-      background: #fff;
-      padding: 30px 40px;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      text-align: center;
-      width: 300px;
-    }
-    h1 {
-      margin-bottom: 20px;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      background: #007bff;
-      border: none;
-      color: white;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-    p {
-      font-size: 0.9rem;
-      margin-top: 10px;
-    }
-    #status {
-      color: red;
-      margin: 5px 0 0;
-    }
-  </style>
-</head>
-<body>
-  <div class="container" id="form-container">
-    <h1 id="form-title">Signup</h1>
-    <input type="text" id="username" placeholder="Username" />
-    <input type="password" id="password" placeholder="Password" />
-    <button onclick="handleAction()">Signup</button>
-    <p id="status"></p>
-    <p id="switch-text">
-      Already have an account? <a href="#" onclick="switchMode()">Login</a>
-    </p>
-  </div>
+<script>
+  // Existing user data stored in localStorage as 'users'
+  let users = JSON.parse(localStorage.getItem("users") || "{}");
 
-  <script src="script.js"></script>
-</body>
-</html>
+  const form = document.getElementById("form");
+  const loginBtn = document.getElementById("loginBtn");
+  const signupBtn = document.getElementById("signupBtn");
+  const message = document.getElementById("message");
+  const usernameInput = document.getElementById("username");
+  const passwordInput = document.getElementById("password");
+
+  let mode = "login"; // or "signup"
+
+  function clearInputs() {
+    usernameInput.value = "";
+    passwordInput.value = "";
+  }
+
+  function showMessage(text, color = "red") {
+    message.style.color = color;
+    message.textContent = text;
+  }
+
+  loginBtn.addEventListener("click", e => {
+    e.preventDefault();
+    mode = "login";
+    showMessage("");
+  });
+
+  signupBtn.addEventListener("click", e => {
+    e.preventDefault();
+    mode = "signup";
+    showMessage("");
+  });
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    // Basic validation
+    if (username.length < 3) {
+      showMessage("Username must be at least 3 characters");
+      return;
+    }
+    if (password.length < 6) {
+      showMessage("Password must be at least 6 characters");
+      return;
+    }
+
+    if (mode === "signup") {
+      if (users[username]) {
+        showMessage("Username already exists");
+        return;
+      }
+      users[username] = password;
+      localStorage.setItem("users", JSON.stringify(users));
+      showMessage("Signup successful! You can now login.", "green");
+      clearInputs();
+      mode = "login";
+      return;
+    }
+
+    if (mode === "login") {
+      if (!users[username]) {
+        showMessage("User not found. Please sign up first.");
+        return;
+      }
+      if (users[username] !== password) {
+        showMessage("Incorrect password.");
+        return;
+      }
+      // Login success!
+      localStorage.setItem("currentUser", username);
+      clearInputs();
+      window.location.href = "dashboard.html"; // redirect to dashboard
+    }
+  });
+</script>

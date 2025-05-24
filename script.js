@@ -1,3 +1,21 @@
+let isLogin = false;
+
+function switchMode() {
+  isLogin = !isLogin;
+  document.getElementById("form-title").innerText = isLogin ? "Login" : "Signup";
+  document.querySelector("button").innerText = isLogin ? "Login" : "Signup";
+  document.getElementById("switch-text").innerHTML = isLogin
+    ? `Don't have an account? <a href="#" onclick="switchMode()">Signup</a>`
+    : `Already have an account? <a href="#" onclick="switchMode()">Login</a>`;
+  document.getElementById("status").innerText = "";
+  clearInputs();
+}
+
+function clearInputs() {
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
+}
+
 function handleAction() {
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
@@ -31,6 +49,7 @@ function handleAction() {
       return;
     }
 
+    // ✅ SUCCESSFUL LOGIN —> Show Dashboard
     showDashboard(username);
   } else {
     if (users[username]) {
@@ -49,13 +68,13 @@ function handleAction() {
 function showDashboard(username) {
   document.body.innerHTML = `
     <div class="container animate">
-      <h1>Welcome, ${username}!</h1>
-      <p>You are now logged in.</p>
+      <h1>Welcome, ${username} 🜲</h1>
+      <p>This is your dashboard.</p>
       <button onclick="logout()">Logout</button>
     </div>
   `;
 }
 
 function logout() {
-  location.reload();
+  location.reload(); // Reset back to login/signup UI
 }
